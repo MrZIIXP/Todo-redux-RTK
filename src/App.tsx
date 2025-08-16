@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Avatar, Button, Card, Drawer, Empty, Image, Spin } from 'antd'
+import { Avatar, Button, Card, Drawer, Empty, Image } from 'antd'
 import {
 	use_Check_Mutation,
 	use_Delete_Image_Mutation,
@@ -25,11 +25,16 @@ import { Input } from './components/ui/input'
 import { Info, Trash2 } from 'lucide-react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Autoplay } from 'swiper/modules'
-import 'swiper/css'
+import 'swiper/swiper-bundle.css'
 
-const PageNumbers = ({ page, setPage, totalPages }) => {
+interface pages {
+	page: number
+	setPage: any
+	totalPages: number
+}
+
+const PageNumbers = ({ page, setPage, totalPages }: pages) => {
 	const pages = []
-	const maxVisiblePages = 5
 
 	let startPage = Math.max(1, page - 2)
 	let endPage = Math.min(totalPages, page + 2)
@@ -57,15 +62,16 @@ const PageNumbers = ({ page, setPage, totalPages }) => {
 
 const App = () => {
 	const [size, setSize] = useState(6)
+	setSize(6)
 	const [page, setPage] = useState(1)
-	const Get = use_Get_Query()
+	const Get = use_Get_Query({})
 	let totalPages = Math.floor(Get.data?.data?.length / size) || 1
 	const [Post, posts] = use_Post_Mutation()
-	const [Put, puts] = use_Put_Mutation()
+	const [Put] = use_Put_Mutation()
 	const [Delete, deletes] = use_Delete_Mutation()
 	const [Check, checks] = use_Check_Mutation()
-	const [Add_Image, add_img] = use_Post_Image_Mutation()
-	const [Del_Image, del_img] = use_Delete_Image_Mutation()
+	const [Add_Image] = use_Post_Image_Mutation()
+	const [Del_Image] = use_Delete_Image_Mutation()
 
 	const [AddOP, setAddOP] = useState(false)
 	const [Add_imgOP, setAdd_imgOP] = useState(false)
@@ -125,7 +131,7 @@ const App = () => {
 		Edit.reset()
 		setEditOP(false)
 	}
-	const openEdit = data => {
+	const openEdit = (data:any) => {
 		Edit.reset({
 			name: data.name,
 			description: data.description,

@@ -62,7 +62,10 @@ const PageNumbers = ({ page, setPage, totalPages }: pages) => {
 
 const App = () => {
 	const [size, setSize] = useState(6)
-	setSize(6)
+	useEffect(()=>{
+		setSize(6)
+	
+	},[])
 	const [page, setPage] = useState(1)
 	const Get = use_Get_Query({})
 	let totalPages = Math.floor(Get.data?.data?.length / size) || 1
